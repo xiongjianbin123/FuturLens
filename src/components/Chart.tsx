@@ -29,8 +29,9 @@ export default function Chart() {
     if (!containerRef.current) return
 
     const chart = createChart(containerRef.current, {
-      width: containerRef.current.clientWidth,
-      height: containerRef.current.clientHeight,
+      // autoSize: true 让图表库自动监听容器尺寸，
+      // 避免初始化时 clientWidth/Height 为 0 导致白屏
+      autoSize: true,
 
       // 透明背景（关键）
       layout: {
@@ -101,19 +102,7 @@ export default function Chart() {
     chartRef.current = chart
     candleSeriesRef.current = candleSeries
 
-    // 窗口 resize 自适应
-    const resizeObserver = new ResizeObserver(() => {
-      if (containerRef.current) {
-        chart.resize(
-          containerRef.current.clientWidth,
-          containerRef.current.clientHeight
-        )
-      }
-    })
-    resizeObserver.observe(containerRef.current)
-
     return () => {
-      resizeObserver.disconnect()
       chart.remove()
       chartRef.current = null
       candleSeriesRef.current = null
@@ -239,13 +228,14 @@ export default function Chart() {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0"
       style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100vw',
+        height: '100vh',
         cursor: mode === 'draw'
-          ? isDrawing
-            ? 'crosshair'
-            : 'cell'
-          : 'none'   // 观察模式鼠标隐藏（穿透时不展示）
+          ? isDrawing ? 'crosshair' : 'cell'
+          : 'default',
       }}
       onContextMenu={handleContextMenu}
       onDoubleClick={handleDoubleClick}

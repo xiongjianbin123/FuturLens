@@ -58,7 +58,8 @@ function createWindow(): void {
   // 开发环境加载 Vite 开发服务器
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-    mainWindow.webContents.openDevTools({ mode: 'detach' })
+    // DevTools 默认关闭，需要时手动按 Alt+Ctrl+I 打开
+    // mainWindow.webContents.openDevTools({ mode: 'detach' })
   } else {
     mainWindow.loadFile(join(__dirname, '../../index.html'))
   }

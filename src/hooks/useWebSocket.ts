@@ -27,14 +27,14 @@ export function useWebSocket(): void {
       wsRef.current = ws
 
       ws.onopen = () => {
-        console.log('[WS] 连接成功')
+        console.log(`[WS] 连接成功  readyState=${ws.readyState}`)  // 1 = OPEN
         setWsConnected(true)
 
         // 订阅指定品种行情
         ws.send(JSON.stringify({
           type: 'subscribe',
           symbol,
-          kline_period: '1m'  // 1分钟 K 线
+          kline_period: '1m'
         }))
       }
 
@@ -68,11 +68,13 @@ export function useWebSocket(): void {
       }
 
       ws.onerror = (err) => {
-        console.error('[WS] 连接错误:', err)
+        console.error(`[WS] 连接错误  readyState=${ws.readyState}`, err)
+        // readyState: 0=CONNECTING 1=OPEN 2=CLOSING 3=CLOSED
+        // 若 mock_server.py 未启动，readyState 会是 3
       }
 
-      ws.onclose = () => {
-        console.log('[WS] 连接断开，准备重连...')
+      ws.onclose = (ev) => {
+        console.log(`[WS] 连接断开  code=${ev.code} reason="${ev.reason}"，${RECONNECT_DELAY/1000}s 后重连...`)
         setWsConnected(false)
         wsRef.current = null
 

@@ -41,11 +41,16 @@ export default function App() {
 
   return (
     <div
-      className="fixed inset-0 overflow-hidden"
       style={{
-        // 整体透明度由主进程控制（electronAPI.setOpacity），
-        // 这里单独控制 UI 覆盖层的透明度
-        opacity: mode === 'observe' ? opacity * 0.4 : opacity
+        position: 'fixed',
+        inset: 0,
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        background: 'transparent',
+        // 整体透明度由主进程 setOpacity 控制
+        // 不在 CSS 层压低，避免 K 线图过暗无法看清
+        opacity,
       }}
     >
       {/* K 线图层（全屏） */}
