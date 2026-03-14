@@ -1,0 +1,16 @@
+node_modules/
+out/
+dist/
+release/
+.DS_Store
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Electron 编译缓存
+.electron-vite/
