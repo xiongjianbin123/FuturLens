@@ -43,24 +43,29 @@ export function useWebSocket(): void {
           const msg: WsMessage = JSON.parse(event.data as string)
 
           switch (msg.type) {
-            case 'history':
-              // 历史 K 线数据（初始化）
-              setCandles(msg.data as Candle[])
+            case 'history': {
+              const bars = msg.data as Candle[]
+              console.log(`[WS] 收到历史 K 线  数量=${bars.length}  首根time=${bars[0]?.time}  末根time=${bars[bars.length-1]?.time}`)
+              setCandles(bars)
               break
-
-            case 'candle':
-              // 实时 K 线更新（最新一根）
-              updateLatestCandle(msg.data as Candle)
+            }
+            case 'candle': {
+              const bar = msg.data as Candle
+              console.log(`[WS] 实时 K 线  time=${bar.time}  close=${bar.close}`)
+              updateLatestCandle(bar)
               break
-
-            case 'tick':
-              // 实时 Tick 价格
-              setLatestTick(msg.data as Tick)
+            }
+            case 'tick': {
+              const tick = msg.data as Tick
+              console.log(`[WS] Tick  price=${tick.price}`)
+              setLatestTick(tick)
               break
-
+            }
             case 'error':
               console.error('[WS] 服务器错误:', msg.message)
               break
+            default:
+              console.log('[WS] 其他消息:', msg)
           }
         } catch (e) {
           console.error('[WS] 消息解析失败:', e)
