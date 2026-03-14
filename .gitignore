@@ -6,6 +6,8 @@ release/
 *.log
 
 # Python
+python/.env
+.env
 __pycache__/
 *.pyc
 *.pyo

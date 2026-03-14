@@ -1,3 +1,3 @@
-# FuturLens Python 行情服务依赖
-tqsdk>=3.6.0          # 天勤量化，提供期货实时行情
-websockets>=12.0       # WebSocket 服务器
+tqsdk>=3.6.0        # 天勤量化，期货实时行情
+websockets>=12.0    # WebSocket 服务器
+python-dotenv>=1.0  # 从 .env 文件读取账号配置
